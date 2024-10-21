@@ -1,0 +1,33 @@
+import random 
+
+class Warrior:
+    def __init__(self, name):
+        self.name = name
+        self.health = 100
+
+    def attack(self, other):
+        """
+        Метод атаки, который уменьшает здоровье другого воина на 20 очков.
+        """
+        other.health -= 20
+        print(f"{self.name} атаковал {other.name}. У {other.name} осталось {other.health} здоровья.")
+
+# Создаем двух воинов
+warrior1 = Warrior("Воин 1")
+warrior2 = Warrior("Воин 2")
+
+# Цикл атаки, который продолжается до тех пор, пока у одного из воинов здоровье не закончится
+while warrior1.health > 0 and warrior2.health > 0:
+    # Случайным образом выбираем, кто атакует
+    if random.choice([True, False]):
+        warrior1.attack(warrior2)  # Воин 1 атакует Воина 2
+    else:
+        warrior2.attack(warrior1)  # Воин 2 атакует Воина 1
+
+    # Проверяем, не закончились ли очки здоровья у одного из воинов
+    if warrior1.health <= 0:
+        print(f"{warrior1.name} погиб. {warrior2.name} одержал победу!")
+        break
+    elif warrior2.health <= 0:
+        print(f"{warrior2.name} погиб. {warrior1.name} одержал победу!")
+        break
