@@ -1,0 +1,89 @@
+import random
+
+class Warrior:
+    def __init__(self, name):
+        self.name = name
+        self.health = 100
+        self.armor = 50
+        self.stamina = 50
+
+    def attack(self, other):
+        """
+        Воин теряет 10 выносливости. Противник теряет здоровье или броню в зависимости от его состояния.
+        Если у атакующего закончилась выносливость, он наносит меньше урона.
+        """
+        if self.stamina > 0:
+            self.stamina -= 10
+            damage = random.randint(10, 30)  # Обычный урон
+        else:
+            damage = random.randint(0, 10)  # Если выносливость закончилась, урон меньше
+
+        # Если у защищающегося есть броня, часть урона идет в броню
+        if other.armor > 0:
+            armor_damage = random.randint(0, 10)
+            health_damage = random.randint(0, 20)
+            other.armor -= armor_damage
+            other.health -= health_damage
+            print(f"{self.name} атаковал {other.name}: {other.name} потерял {health_damage} здоровья и {armor_damage} брони.")
+        else:
+            # Если брони нет, только здоровье теряется
+            health_damage = random.randint(10, 30)
+            other.health -= health_damage
+            print(f"{self.name} атаковал {other.name}: {other.name} потерял {health_damage} здоровья.")
+
+    def defend(self):
+        """
+        Метод защиты. Воин просто ожидает атаку и надеется на броню.
+        """
+        print(f"{self.name} решил защищаться.")
+
+# Функция для выполнения сражения
+def battle(warrior1, warrior2):
+    while warrior1.health > 10 and warrior2.health > 10:
+        # Случайно определяем действия каждого воина
+        action1 = random.choice(["attack", "defend"])
+        action2 = random.choice(["attack", "defend"])
+
+        if action1 == "attack" and action2 == "attack":
+            # Оба атакуют
+            warrior1.attack(warrior2)
+            warrior2.attack(warrior1)
+        elif action1 == "attack" and action2 == "defend":
+            # Воин 1 атакует, воин 2 защищается
+            warrior1.attack(warrior2)
+        elif action1 == "defend" and action2 == "attack":
+            # Воин 2 атакует, воин 1 защищается
+            warrior2.attack(warrior1)
+        else:
+            # Оба защищаются, ничего не происходит
+            print(f"Оба воина решили защищаться. Никто не получил урон.")
+        
+        # Выводим текущее состояние воинов
+        print(f"{warrior1.name}: {warrior1.health} здоровья, {warrior1.armor} брони, {warrior1.stamina} выносливости")
+        print(f"{warrior2.name}: {warrior2.health} здоровья, {warrior2.armor} брони, {warrior2.stamina} выносливости")
+        print("-" * 40)
+
+    # Когда у одного из воинов осталось меньше 10 очков здоровья
+    if warrior1.health <= 10:
+        print(f"{warrior1.name} повержен! {warrior2.name} одержал победу!")
+        mercy_or_death(warrior1)
+    else:
+        print(f"{warrior2.name} повержен! {warrior1.name} одержал победу!")
+        mercy_or_death(warrior2)
+
+def mercy_or_death(loser):
+    """
+    Функция, которая спрашивает, убить ли проигравшего воина.
+    """
+    decision = input(f"Воин {loser.name} повержен! Убить его? (да/нет): ").strip().lower()
+    if decision == "да":
+        print(f"Воин {loser.name} убит.")
+    else:
+        print(f"Воин {loser.name} помилован.")
+
+# Создаем двух воинов
+warrior1 = Warrior("Воин 1")
+warrior2 = Warrior("Воин 2")
+
+# Запускаем сражение
+battle(warrior1, warrior2)
