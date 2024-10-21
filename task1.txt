@@ -1,0 +1,22 @@
+class StringVar:
+    def __init__(self, value=""):
+        """Конструктор класса. Инициализирует объект строкой по умолчанию."""
+        self._value = value
+    
+    def set(self, new_value):
+        """Метод для изменения содержимого строки."""
+        self._value = new_value
+    
+    def get(self):
+        """Метод для получения содержимого строки."""
+        return self._value
+
+
+# Создаем объект типа StringVar
+my_string = StringVar()
+
+# Тестируем метод set()
+my_string.set("Hello, World!")
+
+# Тестируем метод get() и выводим результат
+print(my_string.get())  # Ожидаемый результат: "Hello, World!"
